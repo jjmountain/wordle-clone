@@ -4,6 +4,8 @@
 
 My take on the Wordle project.
 
+[Demo here](https://britle.netlify.app/)
+
 ### Installation
 
 `npm i`
