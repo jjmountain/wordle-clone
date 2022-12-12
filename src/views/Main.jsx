@@ -136,7 +136,7 @@ const Letter = (props) => {
       transition: {
         type: "spring",
         bounce: 0.7,
-        duration: 0.5,
+        duration: 0.9,
       },
     },
     flip: {
@@ -196,8 +196,11 @@ const LetterRow = ({ rowIndex }) => {
     hidden: { opacity: 1 },
     flip: {
       transition: {
-        staggerChildren: 0.25,
+        staggerChildren: 0.45,
       },
+    },
+    shake: {
+      transition: {},
     },
   };
 

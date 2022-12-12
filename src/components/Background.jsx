@@ -2,9 +2,7 @@ import { createClient } from "pexels";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Background({ children }) {
-  const client = createClient(
-    "563492ad6f9170000100000148243ec4caf14dcfa3c100055f1f109e"
-  );
+  const client = createClient(import.meta.env.VITE_PEXELS_API_KEY);
   const query = "British";
 
   const { isLoading, error, data } = useQuery({
@@ -14,6 +12,7 @@ export default function Background({ children }) {
       return result;
     },
     staleTime: Infinity,
+    retryDelay: 60000,
   });
 
   if (isLoading)
@@ -37,13 +36,15 @@ export default function Background({ children }) {
   }
 
   return (
-    <div
-      className="bg-contain bg-no-repeat bg-center bg-white"
-      style={{
-        background: `linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url(${chooseBackground()}) no-repeat fixed center`,
-      }}
-    >
-      {children}
+    <div className="bg-blue-900">
+      <div
+        className="bg-contain bg-no-repeat bg-top bg-black"
+        style={{
+          background: `linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(${chooseBackground()}) no-repeat fixed center`,
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

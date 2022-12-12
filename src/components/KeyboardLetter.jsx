@@ -1,13 +1,16 @@
 import { useWords } from "../hooks/word-hooks";
+import { solution_word } from "../lib/words";
 
-export const KeyboardLetter = ({ letter, used }) => {
-  const { answer } = useWords();
-
-  const determineColor = (letter) => {
-    if (answer.includes(letter)) {
-      return "#5F8D41";
+export const KeyboardLetter = ({ letter, used, correctlyPlacedLetters }) => {
+  const determineColor = () => {
+    if (used && correctlyPlacedLetters.includes(letter)) {
+      return "bg-[#5F8D41]";
+    } else if (used && solution_word.includes(letter)) {
+      return "bg-[#C4A240]";
+    } else if (used) {
+      return "bg-gray-500 text-gray-200";
     } else {
-      return "gray";
+      return "bg-gray-200";
     }
   };
 
@@ -18,10 +21,7 @@ export const KeyboardLetter = ({ letter, used }) => {
           new KeyboardEvent("keyup", { key: letter.toUpperCase() })
         )
       }
-      className={`cursor-pointer w-12 h-10 md:h-14 text-xs md:text-sm font-bold bg-gray-200 active:bg-gray-400 flex grow shrink items-center justify-center rounded-md m-1`}
-      style={{
-        backgroundColor: used && determineColor(letter),
-      }}
+      className={`cursor-pointer ${determineColor()}  opacity-90 h-10 h-14 text-xs md:text-sm font-bold active:bg-gray-400 flex grow shrink items-center justify-center rounded-md m-1`}
     >
       {letter}
     </div>

@@ -5,16 +5,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from "react-dom/client";
 import Main from "./views/Main";
 import DataProvider from "./hooks/word-hooks";
-import * as dotenv from "dotenv";
 
 const queryClient = new QueryClient();
-const result = dotenv.config();
 
-if (result.error) {
-  throw result.error;
-}
-
-console.log(result.parsed);
 const App = () => {
   return (
     <DataProvider>
