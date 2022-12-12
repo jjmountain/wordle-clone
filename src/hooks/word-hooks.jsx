@@ -17,9 +17,6 @@ export default function DataProvider({ children }) {
   const [rowAnimationState, setRowAnimationState] = useState(createArray(6));
 
   // useRef hooks
-  const prevWordStateRef = useRef(createArray(6, ""));
-
-  const prevWordState = prevWordStateRef.current;
 
   const currentAttemptIndexRef = useRef(0);
 
@@ -46,7 +43,6 @@ export default function DataProvider({ children }) {
         wordState,
         attemptsState,
         rowAnimationState,
-        prevWordState,
         incrementAttemptState,
         currentAttemptIndex,
         getRowLetters,

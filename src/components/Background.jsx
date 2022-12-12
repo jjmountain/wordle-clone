@@ -1,15 +1,21 @@
-import { createClient } from "pexels";
 import { useQuery } from "@tanstack/react-query";
+import flagSVG from "../assets/uk_flag.svg";
 
 export default function Background({ children }) {
-  const client = createClient(import.meta.env.VITE_PEXELS_API_KEY);
-  const query = "British";
-
   const { isLoading, error, data } = useQuery({
     queryKey: ["photoData"],
     queryFn: async () => {
-      const result = await client.photos.search({ query, per_page: 30 });
-      return result;
+      const result = await fetch(
+        "https://api.pexels.com/v1/search?query=Great%20Britain&per_page=30",
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            Authorization: import.meta.env.VITE_PEXELS_API_KEY,
+          },
+        }
+      );
+      return result.json();
     },
     staleTime: Infinity,
     retryDelay: 60000,
@@ -36,7 +42,12 @@ export default function Background({ children }) {
   }
 
   return (
-    <div className="bg-blue-900">
+    <div
+      className="bg-[#012169] bg-cover"
+      // style={{
+      //   background: `url(${flagSVG}), no-repeat fixed center`,
+      // }}
+    >
       <div
         className="bg-contain bg-no-repeat bg-top bg-black"
         style={{

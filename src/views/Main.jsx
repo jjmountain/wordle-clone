@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useWords } from "../hooks/word-hooks";
 import { Header } from "../components/Header";

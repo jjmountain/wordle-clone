@@ -1,4 +1,3 @@
-import { useWords } from "../hooks/word-hooks";
 import { solution_word } from "../lib/words";
 
 export const KeyboardLetter = ({ letter, used, correctlyPlacedLetters }) => {
