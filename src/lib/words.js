@@ -11,7 +11,6 @@ export const ROWTHREE = ["Z", "X", "C", "V", "B", "N", "M"];
 export const VALIDLETTERS = [...ROWONE, ...ROWTWO, ...ROWTHREE];
 
 const getWordOfDay = () => {
-  // January 1, 2022 Game Epoch
   const epochMs = new Date("January 30, 2022 00:00:00").valueOf();
   const now = Date.now();
   const msInDay = 86400000;

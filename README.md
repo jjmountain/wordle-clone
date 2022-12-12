@@ -1,10 +1,8 @@
 # Britle
 
-## Wordle Clone with British Words 🇬🇧 
+## Wordle Clone with British Words written in React 🇬🇧 ⚛️
 
 My take on the Wordle project.
-
-[Demo here](https://britle.netlify.app/)
 
 ### Installation
 
