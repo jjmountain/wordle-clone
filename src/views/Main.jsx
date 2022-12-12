@@ -30,7 +30,7 @@ const LetterBack = (props) => {
       rotateX: 0,
       opacity: 1,
       transition: {
-        duration: 0.4,
+        duration: 0.35,
       },
     },
   };
@@ -40,13 +40,14 @@ const LetterBack = (props) => {
       <motion.div
         className={`h-14 w-14`}
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
+          // position: "relative",
+          // top: 0,
+          // left: 0,
           rotateX: 180,
           backgroundColor: props.color,
           color: "white",
-          backfaceVisibility: "hidden",
+          // backfaceVisibility: "visible",
+          // WebkitBackfaceVisibility: "visible",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -55,8 +56,7 @@ const LetterBack = (props) => {
         animate={letterState}
       >
         <motion.span className="font-bold text-3xl" animate={{ rotateX: 180 }}>
-          {" "}
-          {props.letter}{" "}
+          {props.letter}
         </motion.span>
       </motion.div>
     </>
@@ -87,7 +87,7 @@ const LetterFront = (props) => {
       rotateX: 180,
       opacity: 1,
       transition: {
-        duration: 0.4,
+        duration: 0.5,
       },
     },
   };
@@ -128,7 +128,7 @@ const Letter = (props) => {
   const letterVariant = {
     hidden: {
       scale: 0,
-      opacity: 0,
+      opacity: 1,
     },
     show: {
       scale: 1,
@@ -136,7 +136,7 @@ const Letter = (props) => {
       transition: {
         type: "spring",
         bounce: 0.7,
-        duration: 0.9,
+        duration: 0.5,
       },
     },
     flip: {
@@ -144,7 +144,7 @@ const Letter = (props) => {
       scale: 1,
       opacity: 1,
       transition: {
-        duration: 0.4,
+        duration: 0.5,
       },
     },
   };
@@ -307,7 +307,7 @@ export default function Main() {
   }
 
   return (
-    <div className="max-w-3xl px-10 mx-auto h-screen flex flex-col justify-between py-4 ">
+    <div className="max-w-3xl mx-auto h-screen flex flex-col justify-between py-4 ">
       <Header />
       <GameBox />
       <Keyboard />

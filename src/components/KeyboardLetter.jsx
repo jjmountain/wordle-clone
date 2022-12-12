@@ -3,11 +3,11 @@ import { solution_word } from "../lib/words";
 export const KeyboardLetter = ({ letter, used, correctlyPlacedLetters }) => {
   const determineColor = () => {
     if (used && correctlyPlacedLetters.includes(letter)) {
-      return "bg-[#5F8D41]";
+      return "bg-[#5F8D41] text-gray-100";
     } else if (used && solution_word.includes(letter)) {
-      return "bg-[#C4A240]";
+      return "bg-[#C4A240] text-gray-100";
     } else if (used) {
-      return "bg-gray-500 text-gray-200";
+      return "bg-gray-500 text-gray-100";
     } else {
       return "bg-gray-200";
     }

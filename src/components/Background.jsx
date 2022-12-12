@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import flagSVG from "../assets/uk_flag.svg";
 
 export default function Background({ children }) {
   const { isLoading, error, data } = useQuery({
