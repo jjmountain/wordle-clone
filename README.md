@@ -1,6 +1,6 @@
 # Britle
 
-## Wordle Clone with British Words written in React 🇬🇧 ⚛️
+## Wordle Clone with British Words 🇬🇧 
 
 My take on the Wordle project.
 
