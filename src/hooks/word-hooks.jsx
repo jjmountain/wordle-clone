@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
-import { useContext, useRef } from "react";
-import { solution_word, createArray } from "../lib/words";
+import { useContext, useRef, useEffect } from "react";
+import { solution_word, solution_definition, createArray } from "../lib/words";
 
 const DataContext = createContext();
 
@@ -8,7 +8,16 @@ export const useWords = () => useContext(DataContext);
 
 export default function DataProvider({ children }) {
   // useState hooks
+
   const [answer] = useState(solution_word);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const [modalTitle, setModalTitle] = useState("");
+
+  const [modalMessage, setModalMessage] = useState("");
+
+  const [gameState, setGameState] = useState("playing");
 
   const [wordState, setWordState] = useState(createArray(6, ""));
 
@@ -36,6 +45,28 @@ export default function DataProvider({ children }) {
     setAttemptsState(newAttemptsState);
   };
 
+  // useEffects
+
+  useEffect(() => {
+    console.log("run effect");
+    console.log(rowAnimationState, currentAttemptIndex());
+    if (rowAnimationState[currentAttemptIndex() - 1]) {
+      if (gameState === "won") {
+        const capitalized =
+          answer.charAt(0).toUpperCase() + answer.slice(1).toLowerCase();
+        setModalTitle(capitalized);
+        setModalMessage(solution_definition);
+        setShowModal(true);
+      } else if (gameState === "lost") {
+        setModalTitle("You lost!");
+        setModalMessage("You didn't guess the word!");
+        setShowModal(true);
+      } else {
+        return;
+      }
+    }
+  }, [rowAnimationState, currentAttemptIndex(), gameState]);
+
   return (
     <DataContext.Provider
       value={{
@@ -44,11 +75,17 @@ export default function DataProvider({ children }) {
         attemptsState,
         rowAnimationState,
         incrementAttemptState,
-        currentAttemptIndex,
         getRowLetters,
         setWordState,
         setAttemptsState,
         setRowAnimationState,
+        currentAttemptIndex,
+        showModal,
+        setShowModal,
+        modalTitle,
+        modalMessage,
+        gameState,
+        setGameState,
       }}
     >
       {children}
