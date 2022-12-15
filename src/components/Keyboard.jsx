@@ -34,7 +34,7 @@ export const Keyboard = () => {
   }, [rowAnimationState]);
 
   return (
-    <div className="px-3">
+    <div className="px-3 mt-5">
       <div className="w-full flex justify-center">
         {ROWONE.map((letter) => (
           <KeyboardLetter

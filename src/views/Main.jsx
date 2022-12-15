@@ -1,10 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useWords } from "../hooks/word-hooks";
 import { Header } from "../components/Header";
 import { Keyboard } from "../components/Keyboard";
+import useCopyToClipboard from "../hooks/useCopyToClipboard";
 
-import { solution_word, VALIDLETTERS, createArray } from "../lib/words";
+import {
+  solution_word,
+  solutionIndex,
+  VALIDLETTERS,
+  createArray,
+} from "../lib/words";
 import { motion } from "framer-motion";
 import React from "react";
 
@@ -227,12 +233,84 @@ const LetterRow = ({ rowIndex }) => {
   );
 };
 
+export const Modal = ({ show, title, message }) => {
+  const { currentAttemptIndex, wordState, answer } = useWords();
+
+  const variants = {
+    open: { opacity: 1 },
+    closed: { opacity: 0 },
+  };
+
+  const [copyText, setCopyText] = useState(null);
+
+  const [_, copy] = useCopyToClipboard();
+
+  const copyScore = () => {
+    copy(result);
+    setCopyText("Copied!");
+  };
+
+  let coloredBlocks = [...wordState]
+    .map((word) => {
+      const chars = word.split("");
+      return chars
+        .map((char, i) => {
+          if (char === answer[i]) {
+            return "🟩";
+          } else if (answer.includes(char)) {
+            return "🟨";
+          } else return "⬛";
+        })
+        .join("");
+    })
+    .join("\n");
+
+  let result =
+    `Britle.netlify.app #${solutionIndex}\n\n${coloredBlocks}`.trim();
+
+  return (
+    <motion.div
+      animate={show ? "open" : "closed"}
+      initial="closed"
+      variants={variants}
+      transition={{
+        ease: "easeOut",
+        type: "tween",
+        duration: 1.5,
+      }}
+      className="z-50 center mx-2  text-white my-2 px-5 py-2 bg-gray-800/90  shadow-xl rounded text-lg font-thin leading-relaxed tracking-wider w-max"
+    >
+      <div className="mt-0">
+        {" "}
+        <span className="text-xl text-left font-medium inline">
+          {title}{" "}
+        </span>- {message}
+      </div>
+      <button
+        onClick={() => copyScore()}
+        className="mt-4 mb-2 bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-black font-medium text-base tracking-normal leading-normal px-2 py-1 rounded"
+      >
+        Share my score
+      </button>{" "}
+      <motion.span
+        animate={copyText ? "open" : "closed"}
+        variants={variants}
+        className="ml-5"
+      >
+        {copyText}
+      </motion.span>
+    </motion.div>
+  );
+};
+
 function GameBox() {
   return (
-    <div className="flex flex-row justify-center grid grid-rows-5 gap-1 m-4">
-      {createArray(6).map((number, rowIndex) => (
-        <LetterRow key={rowIndex} rowIndex={rowIndex} />
-      ))}
+    <div className="flex flex-col items-center z-10">
+      <div className="flex flex-row justify-center grid grid-rows-5 gap-1 m-4">
+        {createArray(6).map((number, rowIndex) => (
+          <LetterRow key={rowIndex} rowIndex={rowIndex} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -243,21 +321,29 @@ export default function Main() {
     setWordState,
     currentAttemptIndex,
     incrementAttemptState,
+    showModal,
+    modalTitle,
+    modalMessage,
+    gameState,
+    setGameState,
+    answer,
   } = useWords();
 
   const checkWord = () => {
     if (wordState[currentAttemptIndex()] === solution_word) {
-      console.log("Correct!");
-    } else {
-      console.log("Wrong!");
-    }
-    if (currentAttemptIndex() < 6) {
+      console.log("you won!");
       incrementAttemptState();
+      setGameState("won");
+    } else if (currentAttemptIndex() < 6) {
+      incrementAttemptState();
+    } else if (currentAttemptIndex() === 6) {
+      setGameState("lost");
     }
   };
 
   useEffect(() => {
     function handleKeyUp(e) {
+      if (gameState !== "playing") return;
       if (e.key === "Enter") {
         handleEnterKey();
       } else if (e.key === "Backspace") {
@@ -275,7 +361,14 @@ export default function Main() {
   }, [wordState]);
 
   function handleEnterKey() {
+    console.log(
+      "enter key pushed",
+      currentAttemptIndex(),
+      wordState[currentAttemptIndex()]
+    );
+    // return if word is shorter than 5 letters
     if (wordState[currentAttemptIndex()].length < solution_word.length) {
+      console.log("returning");
       return;
     } else if (
       wordState[currentAttemptIndex()].length === solution_word.length
@@ -309,6 +402,7 @@ export default function Main() {
   return (
     <div className="max-w-3xl mx-auto h-screen flex flex-col justify-between py-4 ">
       <Header />
+
       <GameBox />
       <Keyboard />
     </div>

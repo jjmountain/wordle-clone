@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useLayoutEffect, useRef } from "react";
+import Snowfall from "react-snowfall";
 
 export default function Background({ children }) {
   const { isLoading, error, data } = useQuery({
@@ -53,6 +55,8 @@ export default function Background({ children }) {
           background: `linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(${chooseBackground()}) no-repeat fixed center`,
         }}
       >
+        {/* <Snowfall snowflakeCount={50} /> */}
+
         {children}
       </div>
     </div>
