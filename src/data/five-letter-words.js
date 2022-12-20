@@ -1,4 +1,4 @@
-[
+export const FIVE_LETTER_WORDS = [
   "ABACK",
   "ABASE",
   "ABASH",
@@ -3561,5 +3561,5 @@
   "ZIPPY",
   "ZONAL",
   "ZONED",
-  "ZONES"
-]
+  "ZONES",
+];

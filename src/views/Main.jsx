@@ -4,6 +4,9 @@ import { useWords } from "../hooks/word-hooks";
 import { Header } from "../components/Header";
 import { Keyboard } from "../components/Keyboard";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
+import { FOUR_LETTER_WORDS } from "../data/four-letter-words";
+import { FIVE_LETTER_WORDS } from "../data/five-letter-words";
+import { SIX_LETTER_WORDS } from "../data/six-letter-words";
 
 import {
   solution_word,
@@ -185,6 +188,8 @@ const Letter = (props) => {
 const LetterRow = ({ rowIndex }) => {
   const { answer, attemptsState, wordState, setRowAnimationState } = useWords();
 
+  const { shake, setShake } = useWords();
+
   let letters = wordState[rowIndex];
   const attempted = attemptsState[rowIndex];
 
@@ -206,14 +211,27 @@ const LetterRow = ({ rowIndex }) => {
       },
     },
     shake: {
-      transition: {},
+      animate: {
+        x: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10],
+      },
     },
+  };
+
+  const determineAnimationState = () => {
+    if (attempted) {
+      if (shake) {
+        return "shake";
+      }
+      return "flip";
+    } else {
+      return "hidden";
+    }
   };
 
   return (
     <motion.div
       variants={container}
-      animate={attempted ? "flip" : "hidden"}
+      animate={determineAnimationState()}
       className={`flex justify-between mt-0.5`}
       onAnimationComplete={(definition) => {
         definition === "flip" && setRowAnimationState(attemptsState);
@@ -234,7 +252,7 @@ const LetterRow = ({ rowIndex }) => {
 };
 
 export const Modal = ({ show, title, message }) => {
-  const { currentAttemptIndex, wordState, answer } = useWords();
+  const { wordState, answer } = useWords();
 
   const variants = {
     open: { opacity: 1 },
@@ -321,15 +339,16 @@ export default function Main() {
     setWordState,
     currentAttemptIndex,
     incrementAttemptState,
-    showModal,
-    modalTitle,
-    modalMessage,
     gameState,
     setGameState,
-    answer,
+    setShake,
   } = useWords();
 
   const checkWord = () => {
+    if (!isRealWord(wordState[currentAttemptIndex()])) {
+      setShake(true);
+      return;
+    }
     if (wordState[currentAttemptIndex()] === solution_word) {
       console.log("you won!");
       incrementAttemptState();
@@ -339,6 +358,17 @@ export default function Main() {
     } else if (currentAttemptIndex() === 6) {
       setGameState("lost");
     }
+  };
+
+  const isRealWord = (guess) => {
+    if (solution_word.length === 4) {
+      FOUR_LETTER_WORDS.includes(guess.toUpperCase());
+    } else if (solution_word.length === 5) {
+      FIVE_LETTER_WORDS.includes(guess.toUpperCase());
+    } else if (solution_word.length === 6) {
+      SIX_LETTER_WORDS.includes(guess.toUpperCase());
+    }
+    return false;
   };
 
   useEffect(() => {

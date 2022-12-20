@@ -11,6 +11,8 @@ export default function DataProvider({ children }) {
 
   const [answer] = useState(solution_word);
 
+  const [shake, setShake] = React.useState(false);
+
   const [showModal, setShowModal] = useState(false);
 
   const [modalTitle, setModalTitle] = useState("");
@@ -86,6 +88,8 @@ export default function DataProvider({ children }) {
         modalMessage,
         gameState,
         setGameState,
+        shake,
+        setShake,
       }}
     >
       {children}

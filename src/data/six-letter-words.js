@@ -1,4 +1,4 @@
-[
+export const SIX_LETTER_WORDS = [
   "ABACUS",
   "ABASED",
   "ABASES",
@@ -5126,5 +5126,5 @@
   "ZONING",
   "ZONKED",
   "ZOOMED",
-  "ZYGOTE"
-]
+  "ZYGOTE",
+];

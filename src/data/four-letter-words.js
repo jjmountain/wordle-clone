@@ -1,4 +1,4 @@
-[
+export const FOUR_LETTER_WORDS = [
   "ABET",
   "ABLE",
   "ABLY",
@@ -2095,5 +2095,5 @@
   "ZITS",
   "ZONE",
   "ZOOM",
-  "ZOOS"
-]
+  "ZOOS",
+];
