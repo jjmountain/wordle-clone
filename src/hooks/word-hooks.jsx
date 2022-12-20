@@ -1,6 +1,11 @@
 import React, { createContext, useState } from "react";
 import { useContext, useRef, useEffect } from "react";
-import { solution_word, solution_definition, createArray } from "../lib/words";
+import {
+  solution_word,
+  solution_definition,
+  createArray,
+  allWords,
+} from "../lib/words";
 
 const DataContext = createContext();
 
@@ -10,6 +15,8 @@ export default function DataProvider({ children }) {
   // useState hooks
 
   const [answer] = useState(solution_word);
+
+  const [shake, setShake] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -86,6 +93,8 @@ export default function DataProvider({ children }) {
         modalMessage,
         gameState,
         setGameState,
+        shake,
+        setShake,
       }}
     >
       {children}

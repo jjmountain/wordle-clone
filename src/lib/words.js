@@ -22,11 +22,17 @@ const getWordOfDay = () => {
     solution_definition: WORDS[index % WORDS.length].definition,
     solutionIndex: index,
     tomorrow: nextday,
+    allWords: WORDS.map((word) => word.word.toUpperCase()),
   };
 };
 
-export const { solution_word, solution_definition, solutionIndex, tomorrow } =
-  getWordOfDay();
+export const {
+  solution_word,
+  solution_definition,
+  solutionIndex,
+  tomorrow,
+  allWords,
+} = getWordOfDay();
 
 export const createArray = (length, value = false) =>
   [...Array(length)].map(() => value);

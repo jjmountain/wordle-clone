@@ -13,6 +13,7 @@ import {
   solutionIndex,
   VALIDLETTERS,
   createArray,
+  allWords,
 } from "../lib/words";
 import { motion } from "framer-motion";
 import React from "react";
@@ -186,7 +187,13 @@ const Letter = (props) => {
 };
 
 const LetterRow = ({ rowIndex }) => {
-  const { answer, attemptsState, wordState, setRowAnimationState } = useWords();
+  const {
+    answer,
+    attemptsState,
+    wordState,
+    setRowAnimationState,
+    currentAttemptIndex,
+  } = useWords();
 
   const { shake, setShake } = useWords();
 
@@ -204,36 +211,37 @@ const LetterRow = ({ rowIndex }) => {
   };
 
   const container = {
-    hidden: { opacity: 1 },
+    hidden: { opacity: 1, x: 0 },
     flip: {
       transition: {
         staggerChildren: 0.45,
       },
+      x: 0,
     },
     shake: {
-      animate: {
-        x: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10],
+      x: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10],
+      transition: {
+        // type: "spring",
+        // bounce: 0.4,
+        // transition: "easeInOut",
+        duration: 0.5,
       },
     },
-  };
-
-  const determineAnimationState = () => {
-    if (attempted) {
-      if (shake) {
-        return "shake";
-      }
-      return "flip";
-    } else {
-      return "hidden";
-    }
   };
 
   return (
     <motion.div
       variants={container}
-      animate={determineAnimationState()}
+      animate={
+        shake && rowIndex === currentAttemptIndex()
+          ? "shake"
+          : attempted
+          ? "flip"
+          : "hidden"
+      }
       className={`flex justify-between mt-0.5`}
       onAnimationComplete={(definition) => {
+        definition === "shake" && setShake(false);
         definition === "flip" && setRowAnimationState(attemptsState);
       }}
     >
@@ -345,6 +353,8 @@ export default function Main() {
     gameState,
     setGameState,
     answer,
+    shake,
+    setShake,
   } = useWords();
 
   const checkWord = () => {
@@ -352,7 +362,7 @@ export default function Main() {
       !isRealWord(wordState[currentAttemptIndex()]) &&
       wordState[currentAttemptIndex()] !== solution_word
     ) {
-      console.log("not a real word");
+      setShake(true);
       return;
     }
     if (wordState[currentAttemptIndex()] === solution_word) {
@@ -367,12 +377,13 @@ export default function Main() {
   };
 
   const isRealWord = (guess) => {
+    console.log("all words", allWords);
     if (solution_word.length === 4) {
-      FOUR_LETTER_WORDS.includes(guess.toUpperCase());
+      return FOUR_LETTER_WORDS.concat(allWords).includes(guess.toUpperCase());
     } else if (solution_word.length === 5) {
-      FIVE_LETTER_WORDS.includes(guess.toUpperCase());
+      return FIVE_LETTER_WORDS.concat(allWords).includes(guess.toUpperCase());
     } else if (solution_word.length === 6) {
-      SIX_LETTER_WORDS.includes(guess.toUpperCase());
+      return SIX_LETTER_WORDS.concat(allWords).includes(guess.toUpperCase());
     }
     return false;
   };
@@ -397,14 +408,9 @@ export default function Main() {
   }, [wordState]);
 
   function handleEnterKey() {
-    console.log(
-      "enter key pushed",
-      currentAttemptIndex(),
-      wordState[currentAttemptIndex()]
-    );
+    console.log(currentAttemptIndex(), wordState[currentAttemptIndex()]);
     // return if word is shorter than 5 letters
     if (wordState[currentAttemptIndex()].length < solution_word.length) {
-      console.log("returning");
       return;
     } else if (
       wordState[currentAttemptIndex()].length === solution_word.length
