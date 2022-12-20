@@ -4,8 +4,8 @@ import { useWords } from "../hooks/word-hooks";
 import { Header } from "../components/Header";
 import { Keyboard } from "../components/Keyboard";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
-import { FOUR_LETTER_WORDS } from "../data/four-letter-words";
 import { FIVE_LETTER_WORDS } from "../data/five-letter-words";
+import { FOUR_LETTER_WORDS } from "../data/four-letter-words";
 import { SIX_LETTER_WORDS } from "../data/six-letter-words";
 
 import {
@@ -252,7 +252,7 @@ const LetterRow = ({ rowIndex }) => {
 };
 
 export const Modal = ({ show, title, message }) => {
-  const { wordState, answer } = useWords();
+  const { currentAttemptIndex, wordState, answer } = useWords();
 
   const variants = {
     open: { opacity: 1 },
@@ -339,14 +339,20 @@ export default function Main() {
     setWordState,
     currentAttemptIndex,
     incrementAttemptState,
+    showModal,
+    modalTitle,
+    modalMessage,
     gameState,
     setGameState,
-    setShake,
+    answer,
   } = useWords();
 
   const checkWord = () => {
-    if (!isRealWord(wordState[currentAttemptIndex()])) {
-      setShake(true);
+    if (
+      !isRealWord(wordState[currentAttemptIndex()]) &&
+      wordState[currentAttemptIndex()] !== solution_word
+    ) {
+      console.log("not a real word");
       return;
     }
     if (wordState[currentAttemptIndex()] === solution_word) {
