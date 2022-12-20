@@ -87,7 +87,7 @@ const LetterFront = (props) => {
     },
     show: {
       rotateX: 0,
-      scale: 1,
+      scale: 1, 
     },
     flip: {
       rotateX: 180,

@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import Snowfall from "react-snowfall";
 
-export default function Background({ children }) {
+export default function Background({ children }: React.PropsWithChildren<{}>) {
   const { isLoading, error, data } = useQuery({
     queryKey: ["photoData"],
     queryFn: async () => {
