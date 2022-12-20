@@ -8,7 +8,7 @@ export default function Background({ children }) {
     queryFn: async () => {
       console.log("key", import.meta.env.VITE_PEXELS_API_KEY);
       const result = await fetch(
-        "https://api.pexels.com/v1/search?query=Great%20Britain&per_page=30",
+        "https://api.pexels.com/v1/search?query=British&per_page=30",
         {
           method: "GET",
           headers: {
