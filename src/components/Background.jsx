@@ -14,6 +14,7 @@ export default function Background({ children }) {
             Accept: "application/json",
             Authorization: import.meta.env.VITE_PEXELS_API_KEY,
           },
+          credentials: "same-origin",
           mode: "no-cors",
         }
       );
