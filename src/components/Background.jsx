@@ -6,6 +6,7 @@ export default function Background({ children }) {
   const { isLoading, error, data } = useQuery({
     queryKey: ["photoData"],
     queryFn: async () => {
+      console.log("key", import.meta.env.VITE_PEXELS_API_KEY);
       const result = await fetch(
         "https://api.pexels.com/v1/search?query=Great%20Britain&per_page=30",
         {
@@ -14,8 +15,8 @@ export default function Background({ children }) {
             Accept: "application/json",
             Authorization: import.meta.env.VITE_PEXELS_API_KEY,
           },
-          credentials: "same-origin",
-          mode: "no-cors",
+          // credentials: "same-origin",
+          // mode: "no-cors",
         }
       );
       return result.json();
